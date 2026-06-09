@@ -10,6 +10,16 @@ from typing import Any, Dict, List, Optional, Tuple
 import flet as ft
 import numpy as np
 
+def main(page: ft.Page):
+    page.title = "Система доступа"
+    page.padding = ft.padding.symmetric(vertical=10)
+    
+    # СОЗДАЕМ ВАШЕ ПРИЛОЖЕНИЕ
+    app = AccessApp(page) # Предполагаем, что у вас есть класс AccessApp
+    
+    # ДОБАВЛЯЕМ ЕГО НА СТРАНИЦУ
+    page.add(app) 
+    
 
 ICONS = getattr(ft, "Icons", getattr(ft, "icons", None))
 NAV_BAR_DEST = getattr(ft, "NavigationBarDestination", getattr(ft, "NavigationDestination", None))
@@ -1997,18 +2007,9 @@ class AccessApp:
                 self.card("Активные зоны", ft.Column(zone_controls, spacing=10), expand=True),
             ], spacing=16),
         ], expand=True, scroll=ft.ScrollMode.AUTO)
-
-
-def main(page: ft.Page):
-    # Теперь используем ft.padding (это правильно для всех версий)
-    page.padding = ft.padding.symmetric(vertical=10)
     
-    # Ваш остальной код...
-    page.add(ft.Text("Привет, мир!"))
+
 
 if __name__ == "__main__":
-    # Render передает номер порта в переменную PORT
-    # Если мы запускаем локально, то используем 8080
     port = int(os.environ.get("PORT", 8080))
-    
     ft.app(target=main, port=port, view=ft.AppView.WEB_BROWSER)
