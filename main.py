@@ -599,7 +599,7 @@ class AccessApp:
         self.page.window_min_width = 320
         self.page.window_min_height = 620
         self.page.scroll = ft.ScrollMode.HIDDEN
-        self.page.on_resize = lambda e: self.force_refresh_current_view(self.current_tab) if self.current_user else self.build_login_view()
+        # self.page.on_resize = lambda e: self.force_refresh_current_view(self.current_tab) if self.current_user else self.build_login_view()
 
         self.build_login_view()
 
@@ -640,7 +640,7 @@ class AccessApp:
 
     def pill(self, text: str, bg: str, color: str) -> ft.Container:
         return ft.Container(
-            padding=ft.padding.symmetric(horizontal=12, vertical=8),
+            padding=ft.padding.only(left=12, right=12, top=8, bottom=8),
             bgcolor=bg,
             border_radius=999,
             content=ft.Text(text, color=color, size=12, weight=ft.FontWeight.W_700),
@@ -857,7 +857,7 @@ class AccessApp:
             expand=True,
             bgcolor=BG,
             alignment=ft.Alignment(0, 0),
-            padding=ft.padding.symmetric(horizontal=10 if self.is_mobile() else 0),
+            padding=ft.padding.only(left=10 if self.is_mobile() else 0, right=10 if self.is_mobile() else 0),
             content=login_card,
         )
         self.page.add(hero)
@@ -907,7 +907,7 @@ class AccessApp:
 
         header = ft.Container(
             bgcolor=SURFACE,
-            padding=ft.padding.symmetric(horizontal=12 if self.is_mobile() else 24, vertical=12 if self.is_mobile() else 16),
+            padding=ft.padding.only(left=12 if self.is_mobile() else 24, right=12 if self.is_mobile() else 24, top=12 if self.is_mobile() else 16, bottom=12 if self.is_mobile() else 16),
             border=ft.border.only(bottom=ft.BorderSide(1, BORDER)),
             content=ft.Row([
                 ft.Row([
@@ -1657,7 +1657,7 @@ class AccessApp:
                                 self.txt(u.get("name", "Без имени"), size=15, weight=ft.FontWeight.W_700),
                                 ft.Container(expand=True),
                                 ft.Container(
-                                    padding=ft.padding.symmetric(horizontal=10, vertical=6),
+                                    padding=ft.padding.only(left=10, right=10, top=6, bottom=6),
                                     border_radius=999,
                                     bgcolor=role_bg,
                                     content=self.txt(role_label, size=11, weight=ft.FontWeight.W_700, color=role_color),
@@ -2000,9 +2000,15 @@ class AccessApp:
 
 
 def main(page: ft.Page):
-    AccessApp(page)
+    # Теперь используем ft.padding (это правильно для всех версий)
+    page.padding = ft.padding.symmetric(vertical=10)
+    
+    # Ваш остальной код...
+    page.add(ft.Text("Привет, мир!"))
 
 if __name__ == "__main__":
-    # Можно запускать обычной командой: python main.py
-    # host="0.0.0.0" нужен, чтобы телефон видел проект в одной сети.
-    ft.app(target=main, view=ft.AppView.WEB_BROWSER, host="0.0.0.0", port=10000)
+    # Render передает номер порта в переменную PORT
+    # Если мы запускаем локально, то используем 8080
+    port = int(os.environ.get("PORT", 8080))
+    
+    ft.app(target=main, port=port, view=ft.AppView.WEB_BROWSER)

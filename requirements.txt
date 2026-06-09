@@ -1,3 +1,2 @@
-flet
-opencv-python-headless
-numpy
+flet>=0.21.0
+gunicorn
